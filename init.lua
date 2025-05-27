@@ -17,10 +17,10 @@ vim.g.editorconfig = false -- Complete garbage as it loads all plugins .editorco
 
 require("set_term_bg") -- https://github.com/neovim/neovim/issues/16572
 require("lazy").setup("plugins")
-require("mason").setup()
-require("mason-lspconfig").setup{
-  ensure_installed = { "rust_analyzer", "clangd", "css_variables", "htmx"},
-}
+-- require("mason").setup()
+-- require("mason-lspconfig").setup{
+--   ensure_installed = { "rust_analyzer", "clangd", "css_variables", "htmx"},
+-- }
 
 require("nvim-tree").setup{}
 

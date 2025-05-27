@@ -1,7 +1,17 @@
 return {
 {  
     "mason-org/mason.nvim",
+    opts = {},
+},
+{
     "mason-org/mason-lspconfig.nvim",
+    opts = {
+            ensure_installed = { "rust_analyzer", "clangd", "css_variables", "htmx"},
+        },
+    dependencies = {
+            { "mason-org/mason.nvim", opts = {} },
+            "neovim/nvim-lspconfig",
+        },
 },
 {
   "neovim/nvim-lspconfig",
@@ -12,11 +22,6 @@ return {
 --    { "folke/neodev.nvim", opts = {} },
   },
   config = function()
-    -- import lspconfig plugin
-    local lspconfig = require("lspconfig")
-
-    -- import mason_lspconfig plugin
-    local mason_lspconfig = require("mason-lspconfig")
 
     -- import cmp-nvim-lsp plugin
 --    local cmp_nvim_lsp = require("cmp_nvim_lsp")
@@ -82,57 +87,50 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
-    mason_lspconfig.setup_handlers({
-      -- default handler for installed servers
-      function(server_name)
-        lspconfig[server_name].setup({
- --         capabilities = capabilities,
-        })
-      end,
-      ["rust_analyzer"] = function()
-        -- configure emmet language server
-        lspconfig["rust_analyzer"].setup({
---          capabilities = capabilities,
-          filetypes = { "rust" },
-        })
-      end,
-      ["clangd"] = function()
-        -- configure emmet language server
-        lspconfig["clangd"].setup({
---          capabilities = capabilities,
-          cmd = {"clangd", "--background-index", "--log=verbose"},
-          --filetypes = { "c", "h", "cpp", "c++", "hpp" },
-          init_options = { compilationDatabasePath = './build' },
-        })
-      end,
-      ["css_variables"] = function()
-        lspconfig["css_variables"].setup({
-          cmd = {"css-variables-language-server", "--stdio"},
-        })
-      end,
-      ["htmx"] = function()
-        lspconfig["htmx"].setup({
-          cmd = {"htmx-lsp"},
-        })
-      end,
-      --["lua_ls"] = function()
-      --  -- configure lua server (with special settings)
-      --  lspconfig["lua_ls"].setup({
-      --    capabilities = capabilities,
-      --    settings = {
-      --      Lua = {
-      --        -- make the language server recognize "vim" global
-      --        diagnostics = {
-      --          globals = { "vim" },
-      --        },
-      --        completion = {
-      --          callSnippet = "Replace",
-      --        },
-      --      },
-      --    },
-      --  })
-      --end,
+    vim.lsp.config('rust_analyzer', {
+        filetypes = { 'rust' },
+        settings = {
+          ['rust_analyzer'] = { },
+      },
     })
+    vim.lsp.config('clangd', {
+        cmd = {"clangd", "--background-index", "--log=verbose"},
+        --filetypes = { "c", "h", "cpp", "c++", "hpp" },
+        settings = {
+          ['clangd'] = {
+            init_options = { compilationdatabasepath = './build' },
+                    },
+      },
+    })
+    vim.lsp.config('css_variables', {
+        cmd = {"css-variables-language-server", "--stdio"},
+        settings = {
+          ['css_variables'] = { },
+      },
+    })
+    vim.lsp.config('htmx', {
+        cmd = {"htmx-lsp"},
+        settings = {
+          ['htmx'] = { },
+      },
+    })
+    --["lua_ls"] = function()
+    --  -- configure lua server (with special settings)
+    --  lspconfig["lua_ls"].setup({
+    --    capabilities = capabilities,
+    --    settings = {
+    --      Lua = {
+    --        -- make the language server recognize "vim" global
+    --        diagnostics = {
+    --          globals = { "vim" },
+    --        },
+    --        completion = {
+    --          callSnippet = "Replace",
+    --        },
+    --      },
+    --    },
+    --  })
+    --end,
   end,
 },
 }
