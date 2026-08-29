@@ -15,6 +15,8 @@ vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappin
 vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 vim.g.editorconfig = false -- Complete garbage as it loads all plugins .editorconfig ~/.local/share/nvim/lazy/*/.editorconfig
 
+vim.opt.clipboard = "unnamedplus"
+
 require("set_term_bg") -- https://github.com/neovim/neovim/issues/16572
 require("lazy").setup("plugins")
 -- require("mason").setup()
